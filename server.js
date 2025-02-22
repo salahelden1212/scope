@@ -4,7 +4,6 @@ const path = require('path');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const fs = require('fs');
 
 const app = express();
 
@@ -60,15 +59,12 @@ app.get('/submit', (req, res) => {
     res.send('لا يمكن استخدام هذا المسار مباشرة. الرجاء استخدام الفورم.');
 });
 
-// تقديم الملفات الثابتة (مثل HTML, CSS, JS)
-const publicPath = path.join(__dirname, 'public');
-if (fs.existsSync(publicPath)) {
-    app.use(express.static(publicPath));
-}
+// تقديم الملفات الثابتة (مثل HTML, CSS, JS) من المجلد الرئيسي مباشرة
+app.use(express.static(path.join(__dirname)));
 
 // تقديم ملف HTML عند زيارة الـ root
 app.get('/', (req, res) => {
-    res.sendFile(path.join(publicPath, 'index.html'));
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // تشغيل السيرفر
